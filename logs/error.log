@@ -1,0 +1,184 @@
+[2023-10-22 20:46:07 +0300] [11171] [INFO] Starting gunicorn 21.2.0
+[2023-10-22 20:46:07 +0300] [11171] [INFO] Listening at: http://0.0.0.0:443 (11171)
+[2023-10-22 20:46:07 +0300] [11171] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-22 20:46:07 +0300] [11182] [INFO] Booting worker with pid: 11182
+[2023-10-22 20:46:07 +0300] [11182] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/arbiter.py", line 609, in spawn_worker
+    worker.init_process()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/workers/ggevent.py", line 147, in init_process
+    super().init_process()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 134, in init_process
+    self.load_wsgi()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+    return self.load_wsgiapp()
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/site-packages/gunicorn/util.py", line 371, in import_app
+    mod = importlib.import_module(module)
+  File "/www/wwwroot/Api/72664dc0959f3b0c04891f8c7046a9f3_venv/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/www/wwwroot/Api/core/wsgi.py", line 12, in <module>
+    from django.core.wsgi import get_wsgi_application
+ModuleNotFoundError: No module named 'django'
+[2023-10-22 20:46:07 +0300] [11182] [INFO] Worker exiting (pid: 11182)
+[2023-10-22 20:46:07 +0300] [11171] [ERROR] Worker (pid:11182) exited with code 3
+[2023-10-22 20:46:07 +0300] [11171] [ERROR] Shutting down: Master
+[2023-10-22 20:46:07 +0300] [11171] [ERROR] Reason: Worker failed to boot.
+[2023-10-22 21:04:58 +0300] [11413] [INFO] Starting gunicorn 21.2.0
+[2023-10-22 21:04:58 +0300] [11413] [INFO] Listening at: http://0.0.0.0:443 (11413)
+[2023-10-22 21:04:58 +0300] [11413] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-22 21:04:58 +0300] [11425] [INFO] Booting worker with pid: 11425
+[2023-10-22 21:10:06 +0300] [11560] [INFO] Starting gunicorn 21.2.0
+[2023-10-22 21:10:06 +0300] [11560] [INFO] Listening at: http://0.0.0.0:443 (11560)
+[2023-10-22 21:10:06 +0300] [11560] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-22 21:10:06 +0300] [11572] [INFO] Booting worker with pid: 11572
+[2023-10-22 21:38:06 +0300] [13445] [INFO] Starting gunicorn 21.2.0
+[2023-10-22 21:38:06 +0300] [13445] [INFO] Listening at: http://0.0.0.0:443 (13445)
+[2023-10-22 21:38:06 +0300] [13445] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-22 21:38:06 +0300] [13464] [INFO] Booting worker with pid: 13464
+[2023-10-23 16:26:52 +0300] [23339] [INFO] Starting gunicorn 21.2.0
+[2023-10-23 16:26:52 +0300] [23339] [INFO] Listening at: http://0.0.0.0:443 (23339)
+[2023-10-23 16:26:52 +0300] [23339] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-23 16:26:53 +0300] [23346] [INFO] Booting worker with pid: 23346
+[2023-10-23 17:03:00 +0300] [25735] [INFO] Starting gunicorn 21.2.0
+[2023-10-23 17:03:00 +0300] [25735] [INFO] Listening at: http://0.0.0.0:443 (25735)
+[2023-10-23 17:03:00 +0300] [25735] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-23 17:03:00 +0300] [25741] [INFO] Booting worker with pid: 25741
+[2023-10-24 16:52:29 +0300] [32] [INFO] Starting gunicorn 21.2.0
+[2023-10-24 16:52:29 +0300] [32] [INFO] Listening at: http://0.0.0.0:443 (32)
+[2023-10-24 16:52:29 +0300] [32] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-10-24 16:52:29 +0300] [94] [INFO] Booting worker with pid: 94
+[2023-10-24 16:53:15 +0300] [244] [INFO] Starting gunicorn 21.2.0
+[2023-10-24 17:02:07 +0300] [467] [INFO] Starting gunicorn 21.2.0
+[2023-10-24 17:42:06 +0330] [94] [INFO] Parent changed, shutting down: <Worker 94>
+[2023-10-24 17:42:06 +0330] [94] [INFO] Worker exiting (pid: 94)
+[2023-11-04 13:59:22 +0300] [26625] [INFO] Starting gunicorn 21.2.0
+[2023-11-04 13:59:22 +0300] [26625] [INFO] Listening at: http://0.0.0.0:443 (26625)
+[2023-11-04 13:59:22 +0300] [26625] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-11-04 13:59:22 +0300] [26631] [INFO] Booting worker with pid: 26631
+[2023-12-06 14:07:29 +0000] [351508] [INFO] Starting gunicorn 21.2.0
+[2023-12-06 14:07:29 +0000] [351508] [INFO] Listening at: http://0.0.0.0:4443 (351508)
+[2023-12-06 14:07:29 +0000] [351508] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-06 14:07:29 +0000] [351509] [INFO] Booting worker with pid: 351509
+[2023-12-06 14:07:30 +0000] [351509] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/arbiter.py", line 609, in spawn_worker
+    worker.init_process()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/ggevent.py", line 147, in init_process
+    super().init_process()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 134, in init_process
+    self.load_wsgi()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+    return self.load_wsgiapp()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/util.py", line 371, in import_app
+    mod = importlib.import_module(module)
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/www/wwwroot/voip/Api/core/wsgi.py", line 12, in <module>
+    from django.core.wsgi import get_wsgi_application
+ModuleNotFoundError: No module named 'django'
+[2023-12-06 14:07:30 +0000] [351509] [INFO] Worker exiting (pid: 351509)
+[2023-12-06 14:07:30 +0000] [351508] [ERROR] Worker (pid:351509) exited with code 3
+[2023-12-06 14:07:30 +0000] [351508] [ERROR] Shutting down: Master
+[2023-12-06 14:07:30 +0000] [351508] [ERROR] Reason: Worker failed to boot.
+[2023-12-06 14:07:31 +0000] [351524] [INFO] Starting gunicorn 21.2.0
+[2023-12-06 14:07:31 +0000] [351524] [INFO] Listening at: http://0.0.0.0:4443 (351524)
+[2023-12-06 14:07:31 +0000] [351524] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-06 14:07:31 +0000] [351557] [INFO] Booting worker with pid: 351557
+[2023-12-06 14:07:31 +0000] [351557] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/arbiter.py", line 609, in spawn_worker
+    worker.init_process()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/ggevent.py", line 147, in init_process
+    super().init_process()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 134, in init_process
+    self.load_wsgi()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+    return self.load_wsgiapp()
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/site-packages/gunicorn/util.py", line 371, in import_app
+    mod = importlib.import_module(module)
+  File "/www/wwwroot/voip/Api/d9c3bac5ea21dd68f463906c93bd322f_venv/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/www/wwwroot/voip/Api/core/wsgi.py", line 12, in <module>
+    from django.core.wsgi import get_wsgi_application
+ModuleNotFoundError: No module named 'django'
+[2023-12-06 14:07:31 +0000] [351557] [INFO] Worker exiting (pid: 351557)
+[2023-12-06 14:07:31 +0000] [351524] [ERROR] Worker (pid:351557) exited with code 3
+[2023-12-06 14:07:31 +0000] [351524] [ERROR] Shutting down: Master
+[2023-12-06 14:07:31 +0000] [351524] [ERROR] Reason: Worker failed to boot.
+[2023-12-07 07:24:23 +0330] [758638] [INFO] Starting gunicorn 21.2.0
+[2023-12-07 07:24:23 +0330] [758638] [INFO] Listening at: http://0.0.0.0:4443 (758638)
+[2023-12-07 07:24:23 +0330] [758638] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-07 07:24:23 +0330] [758711] [INFO] Booting worker with pid: 758711
+[2023-12-07 07:24:26 +0330] [758638] [INFO] Handling signal: term
+[2023-12-07 07:24:28 +0330] [758711] [INFO] Worker exiting (pid: 758711)
+[2023-12-07 07:24:28 +0330] [758638] [INFO] Shutting down: Master
+[2023-12-07 07:37:07 +0330] [1457] [INFO] Starting gunicorn 21.2.0
+[2023-12-07 07:37:07 +0330] [1457] [INFO] Listening at: http://0.0.0.0:4443 (1457)
+[2023-12-07 07:37:07 +0330] [1457] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-07 07:37:07 +0330] [1999] [INFO] Booting worker with pid: 1999
+[2023-12-26 16:33:12 +0330] [1084961] [INFO] Starting gunicorn 21.2.0
+[2023-12-26 16:33:13 +0330] [1084961] [INFO] Listening at: http://0.0.0.0:4443 (1084961)
+[2023-12-26 16:33:13 +0330] [1084961] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-26 16:33:13 +0330] [1085017] [INFO] Booting worker with pid: 1085017
+[2023-12-26 16:33:18 +0330] [1084961] [INFO] Handling signal: term
+[2023-12-26 16:33:19 +0330] [1085017] [INFO] Worker exiting (pid: 1085017)
+[2023-12-26 16:33:20 +0330] [1084961] [INFO] Shutting down: Master
+[2023-12-26 16:45:54 +0330] [1456] [INFO] Starting gunicorn 21.2.0
+[2023-12-26 16:45:54 +0330] [1456] [INFO] Listening at: http://0.0.0.0:4443 (1456)
+[2023-12-26 16:45:54 +0330] [1456] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-26 16:45:54 +0330] [1572] [INFO] Booting worker with pid: 1572
+[2023-12-26 16:49:18 +0330] [20384] [INFO] Starting gunicorn 21.2.0
+[2023-12-26 16:49:21 +0330] [1456] [INFO] Handling signal: term
+[2023-12-26 16:49:22 +0330] [1572] [INFO] Worker exiting (pid: 1572)
+[2023-12-26 16:49:22 +0330] [1456] [INFO] Shutting down: Master
+[2023-12-26 16:51:40 +0330] [1425] [INFO] Starting gunicorn 21.2.0
+[2023-12-26 16:51:40 +0330] [1425] [INFO] Listening at: http://0.0.0.0:4443 (1425)
+[2023-12-26 16:51:40 +0330] [1425] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2023-12-26 16:51:40 +0330] [1573] [INFO] Booting worker with pid: 1573
+[2024-01-16 07:54:34 +0330] [568300] [INFO] Starting gunicorn 21.2.0
+[2024-01-16 07:54:34 +0330] [568300] [INFO] Listening at: http://0.0.0.0:4443 (568300)
+[2024-01-16 07:54:34 +0330] [568300] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2024-01-16 07:54:34 +0330] [568449] [INFO] Booting worker with pid: 568449
+[2024-01-16 07:54:38 +0330] [568300] [INFO] Handling signal: term
+[2024-01-16 07:54:39 +0330] [568449] [INFO] Worker exiting (pid: 568449)
+[2024-01-16 07:54:39 +0330] [568300] [INFO] Shutting down: Master
+[2024-01-16 08:07:07 +0330] [1533] [INFO] Starting gunicorn 21.2.0
+[2024-01-16 08:07:07 +0330] [1533] [INFO] Listening at: http://0.0.0.0:4443 (1533)
+[2024-01-16 08:07:07 +0330] [1533] [INFO] Using worker: geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+[2024-01-16 08:07:07 +0330] [1694] [INFO] Booting worker with pid: 1694
