@@ -19,10 +19,11 @@ urlpatterns = [
     path('5040/', include('voip.F5040.urls')),
     path('fellows/', include('voip.Hamkadeh_fellows.urls')),
     path('admin/', admin.site.urls),
-    # path('api/users/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+
     path('api/user/', include('User.urls')),
     path('api/record/', include('record.urls')),
     path('api/queuelog/', include('queuelog.urls')),
+    path('api/report/', include('report.urls')),
 ]
 
 urlpatterns = urlpatterns + \
