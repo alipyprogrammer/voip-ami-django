@@ -41,7 +41,6 @@ gevent==23.9.1
 gevent-websocket==0.10.1
 greenlet==3.0.1
 gunicorn==21.2.0
-hiredis==2.2.3
 hyperlink==21.0.0
 idna==3.4
 incremental==22.10.0
