@@ -17,6 +17,14 @@ from . Call_log import *
 
 urlpatterns = [
     
-    path('call_log', ReportVoip),
+    path('call_log/<int:number>', calculate_report_voip),
+    path('del-detail/<int:report_id>', DeleteDetailAPIView.as_view()),
+    path('update/<int:report_id>', create_update),
+    path('create', create_update),
+    path('ReportList', ReportList.as_view()),
 ]
+
+
+
+
 

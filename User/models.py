@@ -64,7 +64,7 @@ class User(AbstractUser):
     robotHamkadeh            = models.BooleanField(default=False)
     statusConsultantHamkadeh = models.BooleanField(default=False)
     robotVoip                = models.BooleanField(default=False)
-
+    Report                   = models.BooleanField(default=False)
     #SaleHamkadeh
     isForwardSaleHamkadeh       = models.BooleanField(default=False) 
     isMonitoringSaleHamkadeh    = models.BooleanField(default=False)
@@ -90,6 +90,10 @@ class Users5040(models.Model):
     name                = models.CharField(max_length = 85 )
     profile             = models.CharField(max_length=250  ,null=True , blank=True )
     status              = models.IntegerField(default=0)
+
+
+
+
 class UsersHamkadeh(models.Model):
     consultant_idd      = models.CharField(max_length = 85 , null=True , blank=True )
     support_idd         = models.CharField(max_length = 85 , null=True , blank=True )

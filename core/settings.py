@@ -28,7 +28,7 @@ SECRET_KEY = 'your_strong_secret_key_here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1' , '192.168.24.73']
+ALLOWED_HOSTS = ['127.0.0.1' , '192.168.24.73','192.168.21.77']
 # ALLOWED_HOSTS = ['91.199.27.85']
 
 # ALLOWED_ORIGINS = ['http://91.199.27.85']

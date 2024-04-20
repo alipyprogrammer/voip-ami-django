@@ -30,13 +30,13 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
     
     #############
     #get_phone
-    get_phone_df=Queue_DF[Queue_DF['event']=='ENTERQUEUE']
 
 
 
 
     try:
        
+        get_phone_df=Queue_DF[Queue_DF['event']=='ENTERQUEUE']
         
         Queue_DF_connect_to_agent_COMPLETECALLER=Queue_DF[Queue_DF['event']=='COMPLETECALLER']
         Queue_DF_connect_to_agent_COMPLETEAGENT=Queue_DF[(Queue_DF['event']=='COMPLETEAGENT')]
@@ -144,7 +144,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
 
 
     except KeyError as error:
-        Queue_DF="NO Report"
+        voip_report="NO Report"
         print(error)
 
     
