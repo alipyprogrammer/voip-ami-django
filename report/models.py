@@ -18,5 +18,8 @@ class Report(models.Model):
     agent                   = models.TextField()
     queue_log               = models.TextField()
     author                  = models.ForeignKey(User,on_delete=models.CASCADE, null=True , blank=True)
+    
+    
     def __str__(self):
         return  self.name
+    

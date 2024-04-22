@@ -31,7 +31,58 @@ from .serializers import QueueLogSerializer
 
 
 @api_view(['POST'])
-def AddQueueLog(request):
+def AddQueueLog_5040(request):
+    Data = request.data
+    user = request.user
+    addList = []
+    if user.robotVoip : 
+        for i in Data:
+            createObject = QueueLog(
+                    idd  = i['id'],
+                    time  = i['time'],
+                    callid  = i['callid'],
+                    queuename  = i['queuename'],
+                    serverid  = i['serverid'],
+                    agent  = i['agent'],
+                    event  = i['event'],
+                    data1  = i['data1'],
+                    data2  = i['data2'],
+                    data3  = i['data3'],
+                    data4  = i['data4'],
+                    data5  = i['data5'],
+            )
+            addList.append(createObject)
+        QueueLog.objects.using("5040").bulk_create(addList)
+        return Response({
+            "status": True,
+            "message": "done",
+            "data": "done"
+        }, status=200)
+    else:
+        return Response({
+            "status": False,
+            "message": "failed",
+        }, status=403)
+
+
+@api_view(['GET'])
+def LastQueueLog_5040(request):
+    last_record = QueueLog.objects.using("5040").latest("id")
+    if int(last_record.idd) > 20 : 
+        return Response({
+                "status": True,
+                "message": "done",
+                "data": last_record.idd
+        }, status=200)
+    else:
+        return Response({
+                "status": False,
+                "message": "id < 20",
+        }, status=500)
+
+
+@api_view(['POST'])
+def AddQueueLog_hamkadeh(request):
     Data = request.data
     user = request.user
     addList = []
@@ -66,7 +117,7 @@ def AddQueueLog(request):
 
 
 @api_view(['GET'])
-def LastQueueLog(request):
+def LastQueueLog_hamkadeh(request):
     last_record = QueueLog.objects.using("hamkadeh").latest("id")
     if int(last_record.idd) > 20 : 
         return Response({
@@ -79,9 +130,6 @@ def LastQueueLog(request):
                 "status": False,
                 "message": "id < 20",
         }, status=500)
-
-
-
 
 
 

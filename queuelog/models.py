@@ -14,6 +14,5 @@ class QueueLog(models.Model):
     data3     = models.CharField(max_length=40,null=True , blank=True)
     data4     = models.CharField(max_length=40,null=True , blank=True)
     data5     = models.CharField(max_length=40,null=True , blank=True)
-    
-    
-    
+
+

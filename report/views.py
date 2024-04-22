@@ -29,6 +29,19 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
+
+
+def string_to_list(string):
+    try:
+        result_list = eval(string)
+        if isinstance(result_list, list):
+            return result_list
+        else:
+            raise ValueError("Input is not a valid list string.")
+    except Exception as e:
+        print("Error:", e)
+        return None
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAuthorOrReadOnly])
 def calculate_report_voip(request , number):
@@ -36,12 +49,15 @@ def calculate_report_voip(request , number):
     Data=request.data
     idNumber = number 
     report_get=get_object_or_404(Report,id=idNumber)   
-    getReport =  ReportSerializer(report_get)    
+    getReport =  ReportSerializer(report_get)   
+
+    
+
     result=Call_log_report(Data['start'],
                            Data['end'],
                            getReport.data['type'],
-                           getReport.data['agent'],
-                           getReport.data['queue_log']
+                           string_to_list(getReport.data['agent']),
+                           string_to_list(getReport.data['queue_log'])
                            )
    
 
@@ -58,7 +74,7 @@ def calculate_report_voip(request , number):
         return Response({
             "status" : False,
             "message" : "NO Report" ,
-            "data" : "NO Report"
+            "data" :  "NO Report"
         },status=400)
 
 

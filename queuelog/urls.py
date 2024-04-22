@@ -7,7 +7,11 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('add-log/' ,views.AddQueueLog ,name="add_log_voip"),
-    path('last-log/' ,views.LastQueueLog ,name="lastLog"),
+    path('add-log/' ,views.AddQueueLog_5040 ,name="add_log_voip"),
+    path('last-log/' ,views.LastQueueLog_5040 ,name="lastLog"),
+    path('add-log-hamkadeh/' ,views.AddQueueLog_hamkadeh ,name="add_log_voip"),
+    path('last-log-hamkadeh/' ,views.LastQueueLog_hamkadeh ,name="lastLog"),
 ]
+
+
 

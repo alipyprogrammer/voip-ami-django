@@ -12,7 +12,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
         Queue_log=QueueLog.objects.using('hamkadeh').filter(time__gte=Start, time__lte=End, agent__in=Agent )
     else:
         Queue_log=QueueLog.objects.using('hamkadeh').filter(time__gte=Start, time__lte=End)
-    
+
 
     if Queuename !=[]:
         Queue_log=QueueLog.objects.using('hamkadeh').filter(time__gte=Start, time__lte=End, queuename__in=Queuename )
@@ -26,8 +26,9 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
     list_Queue=list(queue)
     Queue_DF = pd.DataFrame.from_records(list_Queue)
     Queue_DF=pd.DataFrame(list_Queue)
+        
     ##############
-    
+
     #############
     #get_phone
 
@@ -40,9 +41,26 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
         
         Queue_DF_connect_to_agent_COMPLETECALLER=Queue_DF[Queue_DF['event']=='COMPLETECALLER']
         Queue_DF_connect_to_agent_COMPLETEAGENT=Queue_DF[(Queue_DF['event']=='COMPLETEAGENT')]
-        Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF[(Queue_DF['event']=='RINGNOANSWER')]        
+        Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF[(Queue_DF['event']=='RINGNOANSWER')]   
+
+
+        Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF_connect_to_agent_RINGNOANSWER[Queue_DF_connect_to_agent_RINGNOANSWER['data1']!='0']
+        Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF_connect_to_agent_RINGNOANSWER[Queue_DF_connect_to_agent_RINGNOANSWER['data1']!='1000']
+  
+
+
+        
+        
         
         if Type=='call':
+            Queue_DF_connect_to_agent_COMPLETECALLER["data1"]=Queue_DF_connect_to_agent_COMPLETECALLER["data1"].apply(lambda x:int(x))
+            Queue_DF_connect_to_agent_RINGNOANSWER["data1"]=Queue_DF_connect_to_agent_RINGNOANSWER["data1"].apply(lambda x:int(x))
+            Queue_DF_connect_to_agent_COMPLETEAGENT["data1"]=Queue_DF_connect_to_agent_COMPLETEAGENT["data1"].apply(lambda x:int(x))
+            
+            
+      
+            
+            
             voip_report=get_phone_df.loc[:, ['callid', 'data2']]    
             voip_report=voip_report.rename(columns={"data2":"موبایل"})             
             Queue_DF_NOT_connect_to_agent=Queue_DF[(Queue_DF['event']=='ABANDON')]
@@ -55,7 +73,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
 
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data1"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"تکمیل شده توسط مراحع"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"تکمیل شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="callid",how="outer").fillna(0)
 
             
@@ -69,7 +87,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
             
             
            
-            Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=Queue_DF_connect_to_agent_RINGNOANSWER.groupby(["callid"])["data1"].sum()
+            Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=(Queue_DF_connect_to_agent_RINGNOANSWER.groupby(["callid"])["data1"].sum())/1000
             Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum = Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum.to_frame().reset_index() 
             Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum.rename(columns={"data1":"میسکال"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum,on="callid",how="outer").fillna(0)
@@ -83,21 +101,35 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum,on="callid",how="outer").fillna(0)
 
             
-            if voip_report['تلاش']==0:
-                
-                voip_report['مجموع']=voip_report["میسکال"]+voip_report["تکمیل شده توسط کاربر"]+voip_report["تکمیل شده توسط مراحع"]+voip_report["ترک شده"]
-        
-            else:
-                
-                voip_report['مجموع']=voip_report["تکمیل شده توسط کاربر"]+voip_report["تکمیل شده توسط مراحع"]+voip_report["ترک شده"]
-        
+            voip_report["تکمیل شده توسط مراجع"]=voip_report["تکمیل شده توسط مراجع"].apply(lambda x:int(x))
+            voip_report["میسکال"]=voip_report["میسکال"].apply(lambda x:int(x))
+            voip_report["تکمیل شده توسط کاربر"]=voip_report["تکمیل شده توسط کاربر"].apply(lambda x:int(x))
+            voip_report["ترک شده"]=voip_report["ترک شده"].apply(lambda x:int(x))
+
+
+            # print(type(voip_report['میسکال'][0]))
+            # print(type(voip_report["تکمیل شده توسط کاربر"][0]))
+            # print(type(voip_report["تکمیل شده توسط مراجع"][0]))
+            # print(type(voip_report["ترک شده"][0]))          
+
+
+            voip_report['مجموع'] = voip_report["میسکال"] + voip_report["تکمیل شده توسط کاربر"] + voip_report["تکمیل شده توسط مراجع"] + voip_report["ترک شده"]
+            voip_report['مجموع'] = voip_report['مجموع'].where(voip_report['تلاش'] == 0, voip_report["تکمیل شده توسط کاربر"] + voip_report["تکمیل شده توسط مراجع"] + voip_report["ترک شده"])
+
+
+  
+
         
         elif Type=='agent':
             
-
+            Queue_DF_connect_to_agent_COMPLETECALLER["data1"]=Queue_DF_connect_to_agent_COMPLETECALLER["data1"].apply(lambda x:int(x))
+            Queue_DF_connect_to_agent_RINGNOANSWER["data1"]=Queue_DF_connect_to_agent_RINGNOANSWER["data1"].apply(lambda x:int(x))
+            Queue_DF_connect_to_agent_COMPLETEAGENT["data1"]=Queue_DF_connect_to_agent_COMPLETEAGENT["data1"].apply(lambda x:int(x))
+            
+            
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["agent"])["data1"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"تکمیل شده توسط مراحع"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"تکمیل شده توسط مراجع"})
 
 
             
@@ -111,7 +143,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
             
             
            
-            Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=Queue_DF_connect_to_agent_RINGNOANSWER.groupby(["agent"])["data1"].sum()
+            Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=(Queue_DF_connect_to_agent_RINGNOANSWER.groupby(["agent"])["data1"].sum())/1000
             Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum = Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum.to_frame().reset_index() 
             Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum.rename(columns={"data1":"میسکال"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum,on="agent",how="outer").fillna(0)
@@ -124,16 +156,16 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
             Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum=Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum.rename(columns={"data1":"تعداد میسکال"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_RINGNOANSWER_hold_sum,on="agent",how="outer").fillna(0)
 
-            
-            if voip_report['تلاش']==0:
-                
-                voip_report['مجموع']=voip_report["میسکال"]+voip_report["تکمیل شده توسط کاربر"]+voip_report["تکمیل شده توسط مراحع"]
-        
-            else:
-                
-                voip_report['مجموع']=voip_report["تکمیل شده توسط کاربر"]+voip_report["تکمیل شده توسط مراحع"]
 
-        
+            voip_report["تکمیل شده توسط مراجع"]=voip_report["تکمیل شده توسط مراجع"].apply(lambda x:int(x))
+            voip_report["میسکال"]=voip_report["میسکال"].apply(lambda x:int(x))
+            voip_report["تکمیل شده توسط کاربر"]=voip_report["تکمیل شده توسط کاربر"].apply(lambda x:int(x))
+
+       
+            voip_report['مجموع'] = voip_report["میسکال"] + voip_report["تکمیل شده توسط کاربر"] + voip_report["تکمیل شده توسط مراجع"] 
+            voip_report['مجموع'] = voip_report['مجموع'].where(voip_report["تعداد میسکال"] == 0, voip_report["تکمیل شده توسط کاربر"] + voip_report["تکمیل شده توسط مراجع"])
+
+            voip_report=voip_report.rename(columns={"agent":"داخلی"})        
         
         else:
             raise Exception('type invalid')
@@ -145,7 +177,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list):
 
     except KeyError as error:
         voip_report="NO Report"
-        print(error)
+        print("Error:", error)
 
     
     return(voip_report)
