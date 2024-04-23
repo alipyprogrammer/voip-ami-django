@@ -88,7 +88,7 @@ def AddQueueLog_hamkadeh(request):
     addList = []
     if user.robotVoip : 
         for i in Data:
-            createObject = QueueLog(
+            createObject = QueueLoghamkadeh(
                     idd  = i['id'],
                     time  = i['time'],
                     callid  = i['callid'],
@@ -103,7 +103,7 @@ def AddQueueLog_hamkadeh(request):
                     data5  = i['data5'],
             )
             addList.append(createObject)
-        QueueLog.objects.using("hamkadeh").bulk_create(addList)
+        QueueLoghamkadeh.objects.using("hamkadeh").bulk_create(addList)
         return Response({
             "status": True,
             "message": "done",
@@ -118,7 +118,7 @@ def AddQueueLog_hamkadeh(request):
 
 @api_view(['GET'])
 def LastQueueLog_hamkadeh(request):
-    last_record = QueueLog.objects.using("hamkadeh").latest("id")
+    last_record = QueueLoghamkadeh.objects.using("hamkadeh").latest("id")
     if int(last_record.idd) > 20 : 
         return Response({
                 "status": True,

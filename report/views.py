@@ -40,7 +40,7 @@ def string_to_list(string):
             raise ValueError("Input is not a valid list string.")
     except Exception as e:
         print("Error:", e)
-        return None
+        return ([])
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAuthorOrReadOnly])
@@ -57,7 +57,8 @@ def calculate_report_voip(request , number):
                            Data['end'],
                            getReport.data['type'],
                            string_to_list(getReport.data['agent']),
-                           string_to_list(getReport.data['queue_log'])
+                           string_to_list(getReport.data['queue_log']),
+                           getReport.data['company']
                            )
    
 
