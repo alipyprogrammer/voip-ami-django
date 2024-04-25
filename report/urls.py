@@ -22,6 +22,7 @@ urlpatterns = [
     path('update/<int:report_id>', create_update),
     path('create', create_update),
     path('ReportList', ReportList.as_view()),
+    path('excell/<int:number>', report_excell),
 ]
 
 

@@ -45,9 +45,9 @@ class SocketConsumer(AsyncWebsocketConsumer):
 
 
 
-        PeersData = await self.get_peers_data()
-        MemberData = await self.get_data_member_channels()
-        CallersData = await self.get_data_caller_channels()
+        PeersData          = await self.get_peers_data()
+        MemberData         = await self.get_data_member_channels()
+        CallersData        = await self.get_data_caller_channels()
         ActiveChannelsData = await self.get_data_ActiveChannels_channels()
 
         await channel_layer.group_send(

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from queuelog.models import *
+from django.http import HttpResponse
 from .Call_log import *
 import pandas as pd
 import json
@@ -27,7 +28,7 @@ from .serializer import *
 from User.permissions import *
 from rest_framework.response import Response
 from rest_framework import status
-
+from io import BytesIO
 
 
 
@@ -51,13 +52,13 @@ def calculate_report_voip(request , number):
     report_get=get_object_or_404(Report,id=idNumber)   
     getReport =  ReportSerializer(report_get)   
 
-    
+
 
     result=Call_log_report(Data['start'],
                            Data['end'],
                            getReport.data['type'],
-                           string_to_list(getReport.data['agent']),
-                           string_to_list(getReport.data['queue_log']),
+                           getReport.data['agent'],
+                           getReport.data['queue_log'],
                            getReport.data['company']
                            )
    
@@ -106,6 +107,7 @@ def create_update(request,report_id=None):
         report.type=Data['type']
         report.agent=Data['agent']
         report.queue_log=Data['queue_log']
+        report.company= Data['company']
         report.save()
         return Response({'message': "updated"})
 
@@ -114,6 +116,7 @@ def create_update(request,report_id=None):
                               type=Data['type'],
                               agent=Data['agent'],
                               queue_log=Data['queue_log'],
+                              company=Data['company'],
                               author=User
         )
 
@@ -135,6 +138,48 @@ class ReportList(ListAPIView):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthorOrReadOnly, IsAuthenticated,])
+def report_excell(request, number):
+    Data = request.data
+    idNumber = number 
+    report_get = get_object_or_404(Report, id=idNumber)   
+    getReport =  ReportSerializer(report_get)   
+
+
+
+
+    result = Call_log_report_excell(Data['start'],
+                             Data['end'],
+                             getReport.data['type'],
+                             getReport.data['agent'],
+                             getReport.data['queue_log'],
+                             getReport.data['company']
+                             )
+
+    if isinstance(result, str):
+        return HttpResponse(result, content_type="text/plain")
+    else:
+        excel_buffer = BytesIO()
+
+
+        with pd.ExcelWriter(excel_buffer,mode="w") as writer:
+            result.to_excel(writer, sheet_name="1", index=False)
+
+        excel_buffer.seek(0)
+        excel_data = excel_buffer.getvalue()
+        
+        if len(excel_data) == 0:
+            print("Excel data is empty")
+        else:
+            print("Excel data is not empty")
+
+
+        
+        response = HttpResponse(excel_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="report.xlsx"'
+        
+        return response
 
 
 

@@ -53,4 +53,4 @@ class QueueLogAdminhamkadeh(admin.ModelAdmin):
 
 
 
-admin.site.register(QueueLoghamkadeh , QueueLogAdmin)
+admin.site.register(QueueLoghamkadeh , QueueLogAdminhamkadeh)
