@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from queuelog.models import *
 from django.http import HttpResponse
-from .Call_log import *
+from .call_log import *
 import pandas as pd
 import json
 from django.shortcuts import render
@@ -96,35 +96,48 @@ class DeleteDetailAPIView(APIView):
 
 
 @permission_classes([IsAuthenticated,])
-@api_view(['POST','PUT'])
-def create_update(request,report_id=None):
+@api_view(['POST'])
+def report_update(request,report_id=None):
     Data=request.data
     User=request.user
 
-    if request.method=="PUT":
-        report = get_object_or_404(Report, id=report_id)
-        report.name=Data['name']
-        report.type=Data['type']
-        report.agent=Data['agent']
-        report.queue_log=Data['queue_log']
-        report.company= Data['company']
-        report.save()
-        return Response({'message': "updated"})
 
-    elif request.method=="POST":
-        Report.objects.create(name=Data['name'],
-                              type=Data['type'],
-                              agent=Data['agent'],
-                              queue_log=Data['queue_log'],
-                              company=Data['company'],
-                              author=User
-        )
+    report = get_object_or_404(Report, id=report_id)
+    report.name=Data['name']
+    report.type=Data['type']
+    report.agent=Data['agent']
+    report.queue_log=Data['queue_log']
+    report.company= Data['company']
+    report.save()
+    return Response({'message': "updated"})
 
-        return Response({'message': "created"},status=status.HTTP_201_CREATED)
 
-    else:
-        return Response({'message': "method not allow"},status=status.HTTP_201_CREATED)
+
         
+
+
+
+@permission_classes([IsAuthenticated,])
+@api_view(['POST'])
+def report_create(request,report_id=None):
+    Data=request.data
+    User=request.user
+
+
+    Report.objects.create(name=Data['name'],
+                          type=Data['type'],
+                          agent=Data['agent'],
+                          queue_log=Data['queue_log'],
+                          company=Data['company'],
+                          author=User
+    )
+    return Response({'message': "created"},status=status.HTTP_201_CREATED)
+
+
+    
+
+
+
 
 
 @permission_classes([IsAuthenticated])

@@ -12,15 +12,15 @@ from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
-from . import Call_log
-from . Call_log import *
+from . import call_log
+from . call_log import *
 
 urlpatterns = [
     
     path('call_log/<int:number>', calculate_report_voip),
     path('del-detail/<int:report_id>', DeleteDetailAPIView.as_view()),
-    path('update/<int:report_id>', create_update),
-    path('create', create_update),
+    path('update/<int:report_id>', report_update),
+    path('create', report_create),
     path('ReportList', ReportList.as_view()),
     path('excell/<int:number>', report_excell),
 ]
