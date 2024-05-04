@@ -12,6 +12,9 @@ class Report(models.Model):
     Type_CHOICES = (
     ("call", "call"),
     ("agent", "agent"),
+    ("hourcall", "hourcall"),
+    ("houragent", "houragent"),
+    
     )
     comopany_CHOICES = (
     ("hamkadeh", "hamkadeh"),
