@@ -28,7 +28,7 @@ SECRET_KEY = 'your_strong_secret_key_here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1' , '192.168.24.73','192.168.21.77']
+ALLOWED_HOSTS = ['127.0.0.1' , '192.168.24.73','192.168.150.246']
 # ALLOWED_HOSTS = ['91.199.27.85']
 
 # ALLOWED_ORIGINS = ['http://91.199.27.85']
@@ -156,9 +156,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://91.199.27.85:4443",
     "http://192.168.24.61:8000",
     "http://192.168.24.61",
-    "http://192.168.24.73",
-    "http://192.168.24.73:8000",
-    "http://192.168.21.215:4030",
+    "http://192.168.150.246",
+
 
 
     
