@@ -77,6 +77,9 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
         Queue_DF_connect_to_agent_COMPLETECALLER=Queue_DF[Queue_DF['event']=='COMPLETECALLER']
         Queue_DF_connect_to_agent_COMPLETEAGENT=Queue_DF[(Queue_DF['event']=='COMPLETEAGENT')]
         Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF[(Queue_DF['event']=='RINGNOANSWER')]   
+        Queue_DF_LOGGIN_TIME=Queue_DF[(Queue_DF['event']=='AGENTLOGOFF')]
+        
+
 
 
         Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF_connect_to_agent_RINGNOANSWER[Queue_DF_connect_to_agent_RINGNOANSWER['data1']!='0']
@@ -91,6 +94,7 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
 
         Queue_DF_connect_to_agent_RINGNOANSWER['data2']=Queue_DF_connect_to_agent_RINGNOANSWER['data2'].apply(lambda x:0 if x=="" else x)
         Queue_DF_connect_to_agent_RINGNOANSWER['data2']=Queue_DF_connect_to_agent_RINGNOANSWER['data2'].apply(lambda x:float(x))
+        Queue_DF_LOGGIN_TIME['data2']=Queue_DF_LOGGIN_TIME['data2'].apply(lambda x:int(x))
 
 
         
@@ -114,33 +118,33 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
 
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"COMPLETECALLER"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"COMPLETECALLER"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="callid",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data1":"COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="callid",how="outer").fillna(0)
             
             
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_number = Queue_DF_connect_to_agent_COMPLETECALLER_number.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data1":"number_COMPLETECALLER"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data2":"number_COMPLETECALLER"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_number,on="callid",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"number_COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"number_COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on="callid",how="outer").fillna(0)
 
 
@@ -187,19 +191,21 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
             Queue_DF_connect_to_agent_COMPLETEAGENT["data1"]=Queue_DF_connect_to_agent_COMPLETEAGENT["data1"].apply(lambda x:int(x))
             
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["agent"])["data2"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum =Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"COMPLETECALLER"})
+            voip_report =Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"COMPLETECALLER"})
 
 
-            
-            
+            Queue_DF_LOGGIN_TIME_REPORT =Queue_DF_LOGGIN_TIME.groupby(["agent"])["data2"].sum()
+            Queue_DF_LOGGIN_TIME_REPORT = Queue_DF_LOGGIN_TIME_REPORT.to_frame().reset_index() 
+            Queue_DF_LOGGIN_TIME_REPORT =Queue_DF_LOGGIN_TIME_REPORT.rename(columns={"data2":"LOGIN_TIME"})            
+            voip_report =voip_report.merge(Queue_DF_LOGGIN_TIME_REPORT,on="agent",how="outer").fillna(0)            
             
 
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum =Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum =Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"COMPLETEAGENT"})
-            voip_report =Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="agent",how="outer").fillna(0)
+            voip_report =voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="agent",how="outer").fillna(0)
             
             
            
@@ -270,33 +276,33 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
            
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"COMPLETECALLER"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"COMPLETECALLER"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="time",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"number_COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"number_COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on="time",how="outer").fillna(0)
             
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"number_COMPLETECALLER"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"number_COMPLETECALLER"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="time",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data1":"COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="time",how="outer").fillna(0)
             
 
@@ -330,15 +336,16 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
             # print(type(voip_report["ABANDON"][0]))          
 
 
-            voip_report['SUM'] = voip_report["MISS_DURATION"] + voip_report["COMPLETECALLER"] + voip_report["COMPLETEAGENT"] + voip_report["ABANDON"]
-            voip_report['SUM'] = voip_report['SUM'].where(voip_report['number_miss'] == 0, voip_report["COMPLETEAGENT"] + voip_report["COMPLETECALLER"] + voip_report["ABANDON"])
+            voip_report['call_duration'] = voip_report["MISS_DURATION"] + voip_report["COMPLETECALLER"] + voip_report["COMPLETEAGENT"] + voip_report["ABANDON"]
+            voip_report['call_duration'] = voip_report['call_duration'].where(voip_report['number_miss'] == 0, voip_report["COMPLETEAGENT"] + voip_report["COMPLETECALLER"] + voip_report["ABANDON"])
 
         
             voip_report.sort_values(by=['time'], inplace=True)
 
 
 
-        
+
+
         elif Type=='houragent':
            
             
@@ -351,33 +358,33 @@ def Call_log_report(Start, End, Type, Agent:list, Queuename:list,company):
 
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            voip_report=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"COMPLETECALLER"})
+            voip_report=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"COMPLETECALLER"})
 
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data1":"COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on=["time","agent"],how="outer").fillna(0)
             
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_number = Queue_DF_connect_to_agent_COMPLETECALLER_number.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data1":"number_COMPLETECALLER"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data2":"number_COMPLETECALLER"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_number,on=["time","agent"],how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"number_COMPLETEAGENT"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"number_COMPLETEAGENT"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on=["time","agent"],how="outer").fillna(0)
 
 
@@ -516,7 +523,7 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
         Queue_DF_connect_to_agent_COMPLETECALLER=Queue_DF[Queue_DF['event']=='COMPLETECALLER']
         Queue_DF_connect_to_agent_COMPLETEAGENT=Queue_DF[(Queue_DF['event']=='COMPLETEAGENT')]
         Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF[(Queue_DF['event']=='RINGNOANSWER')]   
-
+        Queue_DF_LOGGIN_TIME=Queue_DF[(Queue_DF['event']=='AGENTLOGOFF')]  
 
         Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF_connect_to_agent_RINGNOANSWER[Queue_DF_connect_to_agent_RINGNOANSWER['data1']!='0']
         Queue_DF_connect_to_agent_RINGNOANSWER=Queue_DF_connect_to_agent_RINGNOANSWER[Queue_DF_connect_to_agent_RINGNOANSWER['data1']!='1000']
@@ -530,7 +537,7 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
 
         Queue_DF_connect_to_agent_RINGNOANSWER['data2']=Queue_DF_connect_to_agent_RINGNOANSWER['data2'].apply(lambda x:0 if x=="" else x)
         Queue_DF_connect_to_agent_RINGNOANSWER['data2']=Queue_DF_connect_to_agent_RINGNOANSWER['data2'].apply(lambda x:float(x))
-
+        Queue_DF_LOGGIN_TIME['data2']=Queue_DF_LOGGIN_TIME['data2'].apply(lambda x:int(x))
 
         
         
@@ -553,33 +560,33 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
 
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"قطع شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"قطع شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="callid",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data1":"قطع شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="callid",how="outer").fillna(0)
             
             
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["callid"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_number = Queue_DF_connect_to_agent_COMPLETECALLER_number.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data1":"تعداد تماس تکمیل شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data2":"تعداد تماس قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_number,on="callid",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["callid"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"تعداد تماس تکمیل شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"تعداد تماس قطع شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on="callid",how="outer").fillna(0)
 
 
@@ -611,8 +618,8 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
 
 
 
-            voip_report["مجموع"] = voip_report["مدت میسکال"] + voip_report["قطع شده توسط مراجع"] + voip_report["قطع شده توسط کاربر"] + voip_report["از صف خارج شده"]
-            voip_report["مجموع"] = voip_report["مجموع"].where(voip_report["تعداد میسکال"] == 0, voip_report["قطع شده توسط کاربر"] + voip_report["قطع شده توسط مراجع"] + voip_report["از صف خارج شده"])
+            voip_report["مدت مکالمه"] = voip_report["مدت میسکال"] + voip_report["قطع شده توسط مراجع"] + voip_report["قطع شده توسط کاربر"] + voip_report["از صف خارج شده"]
+            voip_report["مدت مکالمه"] = voip_report["مدت مکالمه"].where(voip_report["تعداد میسکال"] == 0, voip_report["قطع شده توسط کاربر"] + voip_report["قطع شده توسط مراجع"] + voip_report["از صف خارج شده"])
 
 
   
@@ -628,7 +635,7 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
 
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"قطع شده توسط مراجع"})
+            voip_report=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"قطع شده توسط مراجع"})
 
 
             
@@ -638,20 +645,27 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum =Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum =Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"قطع شده توسط کاربر"})
-            voip_report =Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="agent",how="outer").fillna(0)
+            voip_report =voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on="agent",how="outer").fillna(0)
+            
+
+
+            Queue_DF_LOGGIN_TIME_REPORT =Queue_DF_LOGGIN_TIME.groupby(["agent"])["data2"].sum()
+            Queue_DF_LOGGIN_TIME_REPORT = Queue_DF_LOGGIN_TIME_REPORT.to_frame().reset_index() 
+            Queue_DF_LOGGIN_TIME_REPORT =Queue_DF_LOGGIN_TIME_REPORT.rename(columns={"data2":"LOGIN_TIME"})            
+            voip_report =voip_report.merge(Queue_DF_LOGGIN_TIME_REPORT,on="agent",how="outer").fillna(0)            
             
             
            
 
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number.rename(columns={"data2":"تعداد تماس تکمیل شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number.rename(columns={"data2":"تعداد تماس قطع شده توسط کاربر"})
             voip_report =voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum_number,on="agent",how="outer").fillna(0)
 
 
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number =Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number =Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number.rename(columns={"data2":"تعداد تماس تکمیل شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number =Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number.rename(columns={"data2":"تعداد تماس قطع شده توسط مراجع"})
             voip_report =voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum_number,on="agent",how="outer").fillna(0)
 
 
@@ -709,33 +723,33 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
            
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"قطع شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"قطع شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="time",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"تعداد تماس تکمیل شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"تعداد تماس قطع شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on="time",how="outer").fillna(0)
             
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"تعداد تماس تکمیل شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"تعداد تماس قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum,on="time",how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"قطع شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on="time",how="outer").fillna(0)
             
 
@@ -769,8 +783,8 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
             # print(type(voip_report["از صف خارج شده"][0]))          
 
 
-            voip_report["مجموع"] = voip_report["مدت میسکال"] + voip_report["قطع شده توسط مراجع"] + voip_report["قطع شده توسط کاربر"] + voip_report["از صف خارج شده"]
-            voip_report["مجموع"] = voip_report["مجموع"].where(voip_report["تعداد میسکال"] == 0, voip_report["قطع شده توسط کاربر"] + voip_report["قطع شده توسط مراجع"] + voip_report["از صف خارج شده"])
+            voip_report["مدت مکالمه"] = voip_report["مدت میسکال"] + voip_report["قطع شده توسط مراجع"] + voip_report["قطع شده توسط کاربر"] + voip_report["از صف خارج شده"]
+            voip_report["مدت مکالمه"] = voip_report["مدت مکالمه"].where(voip_report["تعداد میسکال"] == 0, voip_report["قطع شده توسط کاربر"] + voip_report["قطع شده توسط مراجع"] + voip_report["از صف خارج شده"])
 
         
             voip_report.sort_values(by=['time'], inplace=True)
@@ -790,33 +804,33 @@ def Call_log_report_excell(Start, End, Type, Agent:list, Queuename:list,company)
 
 
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum = Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.to_frame().reset_index() 
-            voip_report=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data1":"قطع شده توسط مراجع"})
+            voip_report=Queue_DF_connect_to_agent_COMPLETECALLER_hold_sum.rename(columns={"data2":"قطع شده توسط مراجع"})
 
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data1"].sum()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data2"].sum()
             Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum = Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data1":"قطع شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum=Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum.rename(columns={"data2":"قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_hold_sum,on=["time","agent"],how="outer").fillna(0)
             
 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER.groupby(["time","agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETECALLER_number = Queue_DF_connect_to_agent_COMPLETECALLER_number.to_frame().reset_index() 
-            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data1":"تعداد تماس تکمیل شده توسط مراجع"})
+            Queue_DF_connect_to_agent_COMPLETECALLER_number=Queue_DF_connect_to_agent_COMPLETECALLER_number.rename(columns={"data2":"تعداد تماس قطع شده توسط مراجع"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETECALLER_number,on=["time","agent"],how="outer").fillna(0)
 
             
             
             
 
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data1"].count()
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT.groupby(["time","agent"])["data2"].count()
             Queue_DF_connect_to_agent_COMPLETEAGENT_number = Queue_DF_connect_to_agent_COMPLETEAGENT_number.to_frame().reset_index()            
-            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data1":"تعداد تماس تکمیل شده توسط کاربر"})
+            Queue_DF_connect_to_agent_COMPLETEAGENT_number=Queue_DF_connect_to_agent_COMPLETEAGENT_number.rename(columns={"data2":"تعداد تماس قطع شده توسط کاربر"})
             voip_report=voip_report.merge(Queue_DF_connect_to_agent_COMPLETEAGENT_number,on=["time","agent"],how="outer").fillna(0)
 
 
